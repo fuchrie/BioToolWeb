@@ -42,14 +42,14 @@
       const submitForm = async () => {
         try {
           // 发送 POST 请求到服务器
-          const response = await axios.post("/api/login", formData.value);
+          const response = await axios.post("/api/regist", formData.value);
 
           // 处理服务器响应
           if (response.data.success) {
-            alert("登录成功！");
-            router.push("/tool"); // 跳转到工具页面
+            alert("注册成功！");
+            router.push("/"); // 跳转到工具页面
           } else {
-            alert("登录失败：" + response.data.message);
+            alert("注册失败：" + response.data.message);
           }
         } catch (error) {
           console.error("请求失败：", error);
