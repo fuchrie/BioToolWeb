@@ -46,11 +46,7 @@
       const submitForm = async () => {
         try {
           // 发送 POST 请求到服务器
-          const response = await axios.post("http://202.195.187.9:8000/api/login/",querystring.stringify(formData.value), {
-          headers: {
-            'X-CSRFToken': csrfToken,  // 添加 CSRF 令牌
-          },
-          });
+          const response = await axios.post("http://202.195.187.9:8000/api/login/",querystring.stringify(formData.value));
 
           // 处理服务器响应
           if (response.data.success) {
@@ -64,28 +60,10 @@
           alert("请求失败，请检查网络或服务器状态。");
         }
       };
-      function getCookie(name) {
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== "") {
-          const cookies = document.cookie.split(";");
-          for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            if (cookie.substring(0, name.length + 1) === name + "=") {
-              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-              break;
-            }
-          }
-        }
-        return cookieValue;
-      }
-
-      const csrfToken = getCookie("csrftoken");
 
       return {
-        getCookie,
         formData,
         submitForm,
-        csrfToken,
       };
     },
   }

@@ -42,17 +42,8 @@
 
       const submitForm = async () => {
         try {
-          // 获取 CSRF 令牌
-          const csrfToken = document.cookie
-            .split("; ")
-            .find((row) => row.startsWith("csrftoken="))
-            ?.split("=")[1];
           // 发送 POST 请求到服务器
-          const response = await axios.post("http://202.195.187.9:8000/api/regist/", querystring.stringify(formData.value), {
-          headers: {
-            'X-CSRFToken': csrfToken,  // 添加 CSRF 令牌
-          },
-          });
+          const response = await axios.post("http://202.195.187.9:8000/api/regist/", querystring.stringify(formData.value));
           // 处理服务器响应
           if (response.data.success) {
             alert("注册成功！");
