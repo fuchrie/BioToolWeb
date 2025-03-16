@@ -44,8 +44,15 @@
 
       const submitForm = async () => {
         try {
+          const csrfToken = document.cookie.split('; ')
+          .find(row => row.startsWith('csrftoken='))
+          ?.split('=')[1];
           // 发送 POST 请求到服务器
-          const response = await axios.post("/api/login", formData.value);
+          const response = await axios.post("http://localhost:8000/api/login", formData.value, {
+          headers: {
+            'X-CSRFToken': csrfToken,  // 添加 CSRF 令牌
+          },
+          });
 
           // 处理服务器响应
           if (response.data.success) {
