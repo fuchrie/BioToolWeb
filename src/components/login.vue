@@ -33,6 +33,7 @@
   import { ref } from "vue";
   import { useRouter } from "vue-router";
   import axios from "axios";
+  import querystring from "querystring"
   export default {
     name: "Login",
     setup() {
@@ -48,7 +49,7 @@
           .find(row => row.startsWith('csrftoken='))
           ?.split('=')[1];
           // 发送 POST 请求到服务器
-          const response = await axios.post("http://202.195.187.9:8000/api/login/", formData.value, {
+          const response = await axios.post("http://202.195.187.9:8000/api/login/", querystring.stringify(formData.value), {
           headers: {
             'X-CSRFToken': csrfToken,  // 添加 CSRF 令牌
           },
