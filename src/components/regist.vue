@@ -1,6 +1,6 @@
 <template>
     <div class="regist-container">
-      <form class="regist-form">
+      <form class="regist-form" @submit.prevent="submitForm">
         <h2>用户注册</h2>
         <div class="form-group">
           <label for="username">用户名</label>
@@ -22,7 +22,7 @@
             required
           />
         </div>
-        <button type="submit" class="submit-btn">Regist</button>
+        <button type="submit" class="submit-btn" >Regist</button>
       </form>
     </div>
 </template>
@@ -42,8 +42,11 @@
       const submitForm = async () => {
         try {
           // 发送 POST 请求到服务器
-          const response = await axios.post("http://202.195.187.9:8000/api/regist", formData.value);
-
+          const response = await axios.post("http://202.195.187.9:8000/api/regist", formData.value, {
+          headers: {
+            'X-CSRFToken': csrfToken,  // 添加 CSRF 令牌
+          },
+          });
           // 处理服务器响应
           if (response.data.success) {
             alert("注册成功！");

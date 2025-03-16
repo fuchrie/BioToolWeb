@@ -9,5 +9,5 @@ export NVM_DIR="$HOME/.nvm"
 nvm install 20.11.1
 npm run build
 docker stop biotool
-docker rm -r bitool
+docker rm -f bitool
 docker run -d -p 8080:80 -v $PWD/dist:/usr/share/nginx/html -v /home/foryou/mutou/nginx/conf.d:/etc/nginx/conf.d --name biotool nginx
