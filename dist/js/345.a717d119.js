@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunktry"]=self["webpackChunktry"]||[]).push([[345],{6345:function(n,e,r){function t(n,e,r,t,u,c){return null}r.r(e),r.d(e,{default:function(){return a}});var u={name:"genomics"},c=r(1241);const s=(0,c.A)(u,[["render",t]]);var a=s}}]);
+//# sourceMappingURL=345.a717d119.js.map
