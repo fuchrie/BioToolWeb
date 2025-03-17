@@ -45,9 +45,9 @@
 
       const submitForm = async () => {
         try {
-          // 发送 POST 请求到服务器
-          const response = await axios.post("http://202.195.187.9:8000/api/login/",querystring.stringify(formData.value));
 
+          // 发送 POST 请求到服务器
+          const response = await axios.post("http://202.195.187.9:8000/api/login/",formData.value);
           // 处理服务器响应
           if (response.data.success) {
             alert("登录成功！");

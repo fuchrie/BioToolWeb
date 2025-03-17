@@ -6,10 +6,11 @@
     <h2>ChiP-Seq软件选择</h2>
     
     <div class="container">
-      <!-- 左侧：可选软件 -->
+      <!-- 第一列：上传文件 -->
       <div class="column">
         <upload/>
       </div>
+      <!-- 第二列：可选软件 -->
       <div class="column">
         <h3>可选软件</h3>
         <draggable
@@ -30,7 +31,7 @@
         </draggable>
       </div>
 
-      <!-- 右侧：已选择软件 -->
+      <!-- 第三列：已选择软件 -->
       <div class="column">
         <h3>已选择软件</h3>
         <draggable

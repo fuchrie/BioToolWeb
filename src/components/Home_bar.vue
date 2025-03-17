@@ -2,10 +2,10 @@
     <nav class="navigation">
       <ul class="nav-list">
         <li class="nav-item">
-          <router-link to="/" class="nav-link">Home</router-link>
+          <router-link to="/" class="nav-link">首页</router-link>
         </li>
         <li class="nav-item">
-          <router-link to="/about" class="nav-link">About</router-link>
+          <router-link to="/about" class="nav-link">关于我们</router-link>
         </li>
       </ul>
     </nav>

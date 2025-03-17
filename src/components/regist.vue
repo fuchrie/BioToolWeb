@@ -43,11 +43,12 @@
       const submitForm = async () => {
         try {
           // 发送 POST 请求到服务器
-          const response = await axios.post("http://202.195.187.9:8000/api/regist/", querystring.stringify(formData.value));
+          const response = await axios.post("http://202.195.187.9:8000/api/regist/",formData.value);
+          //console.log(formData.value)
           // 处理服务器响应
           if (response.data.success) {
             alert("注册成功！");
-            router.push("/"); // 跳转到工具页面
+            router.push("/"); // 跳转到首页
           } else {
             alert("注册失败：" + response.data.message);
           }

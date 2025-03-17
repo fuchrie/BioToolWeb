@@ -1,7 +1,7 @@
 <template>
   <bar/>
   <div class="home">
-    <HelloWorld msg="欢迎使用新风貌生信分析网站"/>
+    <HelloWorld msg="欢迎使用3YR生信分析网站"/>
   </div>
   <div class="container">
     <Login/>
