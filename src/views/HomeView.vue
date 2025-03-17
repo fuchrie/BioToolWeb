@@ -1,7 +1,7 @@
 <template>
   <bar/>
   <div class="home">
-    <HelloWorld msg="欢迎使用3YR生信分析网站"/>
+    <HelloWorld msg="欢迎使用基因透镜生信分析网站"/>
   </div>
   <div class="container">
     <Login/>
@@ -12,13 +12,13 @@
 // @ is an alias to /src
 import HelloWorld from '@/components/HelloWorld.vue';
 import Login from '@/components/login.vue';
-import bar from '@/components/Home_bar.vue'
+import bar from '@/components/Home_bar.vue';
 export default {
   name: 'HomeView',
   components: {
     HelloWorld,
     Login,
-    bar
+    bar,
   }
 }
 </script>
@@ -27,5 +27,8 @@ export default {
   display: flex;
   justify-content: center; /* 水平居中 */
   align-items: center;     /* 垂直居中 */
+}
+.home{
+  padding-top: 70px;
 }
 </style>

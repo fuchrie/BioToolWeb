@@ -51,6 +51,8 @@
           // 处理服务器响应
           if (response.data.success) {
             alert("登录成功！");
+            // 将 JWT 令牌存储在 localStorage 中
+            localStorage.setItem("token", response.data.token);
             router.push("/tool"); // 跳转到工具页面
           } else {
             alert("登录失败：" + response.data.message);

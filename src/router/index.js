@@ -26,6 +26,16 @@ const routes = [
     path:'/regist',
     name:'regist',
     component:()=>import('../views/Regist.vue')
+  },
+  {
+    path:'/user',
+    name:'user',
+    component:()=>import('../views/user.vue')
+  },
+  {
+    path:'/genomics',
+    name:'genomics',
+    component:()=>import('../views/genomics.vue')
   }
 ]
 

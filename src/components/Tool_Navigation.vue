@@ -8,11 +8,25 @@
             </div>
           </li>
           <li class="nav-item">
-            <div class="dropdown-container" @mouseout="hide_childbar" @mouseover="show_childbar">
+            <div class="dropdown-container" @mouseout="hide_childbar('epigenomics')" @mouseover="show_childbar('epigenomics')">
               <p class="bartext">表观组分析</p>
-              <div v-show="flag" class="dropdown-content">
+              <div v-show="flags.epigenomics" class="dropdown-content">
                 <router-link to="/chipseq" class="nav-link2">chipseq</router-link>
               </div>
+            </div>
+          </li>
+          <li>
+            <div class="dropdown-container" @mouseout="hide_childbar('genomics')" @mouseover="show_childbar('genomics')">
+              <p class="bartext">基因组分析</p>
+              <div v-show="flags.genomics" class="dropdown-content">
+                <router-link to="/chipseq" class="nav-link2">chipseq</router-link>
+              </div>
+            </div>
+          </li>
+          <li class="nav-item user-item">
+            <div class="bartext">
+              <el-icon><User /></el-icon>
+              <router-link to="/user" class="nav-link1">用户</router-link>
             </div>
           </li>
         </ul>
@@ -21,19 +35,23 @@
 </template>
   
   <script>
-  import {ref} from "vue"
+  import {ref} from "vue";
+  import { User } from '@element-plus/icons-vue'; // 导入 User 图标
   export default {
     name: "ToolNavigationBar",
     setup(){
-      const flag = ref(false);
-      function show_childbar(){
-        flag.value=true
+      const flags = ref({
+        epigenomics: false, // 表观组分析
+        genomics: false,   // 基因组分析
+      });
+      function show_childbar(key){
+        flags.value[key]=true
       }
-      function hide_childbar(){
-        flag.value=false
+      function hide_childbar(key){
+        flags.value[key]=false
       }
       return{
-        flag,
+        flags,
         show_childbar,
         hide_childbar
       }
@@ -42,12 +60,20 @@
   </script>
   
   <style scoped>
+  .user-item {
+    margin-left: auto; /* 将用户项推到最右侧 */
+  }
   .navigation-bar {
+    position: fixed; /* 固定定位 */
+    top: 0; /* 固定在顶部 */
+    left: 0; /* 从左侧开始 */
+    width: 100%; /* 宽度占满整个视口 */
     height: 30px;
     background-color: #2c3e50; /* 导航栏背景颜色 */
     padding: 10px 20px;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000; /* 确保导航栏在最上层 */
   }
   
   .nav-list {

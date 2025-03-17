@@ -19,11 +19,16 @@
   
   <style scoped>
   .navigation {
+    position: fixed; /* 固定定位 */
+    top: 0; /* 固定在顶部 */
+    left: 0; /* 从左侧开始 */
+    width: 100%; /* 宽度占满整个视口 */
     height: 30px;
     background-color: #2c3e50; /* 导航栏背景颜色 */
     padding: 10px 20px;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000; /* 确保导航栏在最上层 */
   }
   
   .nav-list {

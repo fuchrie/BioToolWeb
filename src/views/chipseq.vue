@@ -1,9 +1,9 @@
 <template>
-    <div>
-      <bar/>
-    </div>
-    <div id="app">
-    <h2>ChiP-Seq软件选择</h2>
+  <div>
+    <bar/>
+  </div>
+  <div id="app">
+      <h2>ChiP-Seq软件选择</h2>
     
     <div class="container">
       <!-- 第一列：上传文件 -->
