@@ -3,11 +3,11 @@
     <bar/>
   </div>
   <div id="app">
-      <h2>ChiP-Seq软件选择</h2>
-    
+    <h2>ChiP-Seq软件选择</h2>
     <div class="container">
       <!-- 第一列：上传文件 -->
       <div class="column">
+        <h3>选择分析文件</h3>
         <upload/>
       </div>
       <!-- 第二列：可选软件 -->
@@ -147,7 +147,7 @@
 import bar from '@/components/Tool_Navigation.vue';
 import draggable from "vuedraggable";
 import { ref } from "vue";
-import upload from '@/components/uploadfile.vue'
+import upload from '@/components/FileCheck.vue';
 export default {
   name: 'apparent',
   components:{
@@ -314,13 +314,13 @@ export default {
 <style>
 #app {
   font-family: Arial, sans-serif;
-  padding: 20px;
+  padding-top: 20px;
 }
 
 .container {
   display: flex;
   gap: 20px;
-  height: 500px; /* 固定容器高度 */
+  height: 400px;
 }
 
 .column {
@@ -328,7 +328,7 @@ export default {
   border: 1px solid #ccc;
   padding: 10px;
   border-radius: 5px;
-  height: 100%; /* 固定栏高度 */
+  height: 100%;
   display: flex;
   flex-direction: column;
 }
@@ -338,9 +338,9 @@ export default {
 }
 
 .drag-area {
-  flex: 1; /* 占据剩余空间 */
-  overflow-y: auto; /* 添加垂直滚动条 */
-  padding-right: 10px; /* 避免滚动条遮挡内容 */
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 10px;
 }
 
 .module-card {

@@ -4,14 +4,12 @@
     <HelloWorld msg="欢迎使用基因透镜生信分析网站"/>
   </div>
   <div class="container">
-    <Login/>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
 import HelloWorld from '@/components/HelloWorld.vue';
-import Login from '@/components/login.vue';
 import bar from '@/components/Home_bar.vue';
 export default {
   name: 'HomeView',

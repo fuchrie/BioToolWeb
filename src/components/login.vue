@@ -32,10 +32,9 @@
 <script>
   import { ref } from "vue";
   import { useRouter } from "vue-router";
-  import axios from "axios";
-  import querystring from "querystring"
+  import axios from "@/utils/axios";
   export default {
-    name: "Login",
+    name: "login",
     setup() {
       const router = useRouter(); // 获取路由实例
       const formData = ref({
@@ -53,7 +52,7 @@
             alert("登录成功！");
             // 将 JWT 令牌存储在 localStorage 中
             localStorage.setItem("token", response.data.token);
-            router.push("/tool"); // 跳转到工具页面
+            router.push("/"); // 跳转到工具页面
           } else {
             alert("登录失败：" + response.data.message);
           }

@@ -79,7 +79,6 @@ export default{
   margin: 0 auto; /* 居中 */
 }
 .upload-demo {
-  width: 400px;
   padding: 20px; 
   background-color: #ffffff; 
   border-radius: 8px; 
@@ -97,7 +96,7 @@ export default{
 }
 .submitbutton{
   position: absolute;
-  bottom: 0px; /* 距离底部 10px */
-  right: 10px; /* 距离右侧 10px */
+  top: 110%;
+  left: 42%;
 }
 </style>

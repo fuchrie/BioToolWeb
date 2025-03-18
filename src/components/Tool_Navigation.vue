@@ -4,7 +4,7 @@
         <ul class="nav-list">
           <li class="nav-item">
             <div class="bartext">
-              <router-link to="/tool" class="nav-link1">首页</router-link>
+              <router-link to="/" class="nav-link1">首页</router-link>
             </div>
           </li>
           <li class="nav-item">
@@ -23,12 +23,17 @@
               </div>
             </div>
           </li>
+          <li class="nav-item">
+            <div class="bartext">
+              <router-link to="/about" class="nav-link1">关于我们</router-link>
+            </div>
+          </li>
           <li class="nav-item user-item">
             <div class="bartext">
-              <el-icon><User /></el-icon>
               <router-link to="/user" class="nav-link1">用户</router-link>
             </div>
           </li>
+          
         </ul>
       </nav>
     </div>
@@ -36,7 +41,6 @@
   
   <script>
   import {ref} from "vue";
-  import { User } from '@element-plus/icons-vue'; // 导入 User 图标
   export default {
     name: "ToolNavigationBar",
     setup(){

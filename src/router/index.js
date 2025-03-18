@@ -1,5 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import HomeView from '../views/ToolView.vue'
 
 const routes = [
   {
@@ -11,11 +11,6 @@ const routes = [
     path: '/about',
     name: 'about',
     component: () => import('../views/AboutView.vue')
-  },
-  {
-    path:'/tool',
-    name:'tool',
-    component: () => import('../views/ToolView.vue'),
   },
   {
     path:'/chipseq',
@@ -36,6 +31,11 @@ const routes = [
     path:'/genomics',
     name:'genomics',
     component:()=>import('../views/genomics.vue')
+  },
+  {
+    path:'/login',
+    name:'login',
+    component:()=>import('../views/login.vue')
   }
 ]
 
