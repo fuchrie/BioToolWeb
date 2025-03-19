@@ -103,27 +103,7 @@
                       :id="`${element.id}-${param.name}`"
                       @change="handleFileUpload($event, param)"
                     />
-                    <!-- 样本/对照选择 -->
-                    <select v-model="assignment.role">
-                      <option value="">请选择</option>
-                      <option value="sample">样本</option>
-                      <option value="control">对照</option>
-                    </select>
-
-                    <!-- 对照文件选择（仅当角色为样本时显示） -->
-                    <select
-                      v-if="assignment.role === 'sample'"
-                      v-model="assignment.controlFile"
-                    >
-                      <option value="">请选择对照文件</option>
-                      <option
-                        v-for="file in element.parameters[0].options"
-                        :key="file.value"
-                        :value="file.value"
-                      >
-                        {{ file.label }}
-                      </option>
-                    </select>
+                    
                   </div>
                 </div>
                 <button @click="toggleParams(element)">
@@ -229,7 +209,7 @@ export default {
         id: 6,
         name: "macs2",
         description: "peak calling",
-        hasParams: true,
+        hasParams: false,
         isRequired: true,
         showParams: false,
         parameters: [
