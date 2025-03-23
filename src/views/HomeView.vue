@@ -3,8 +3,7 @@
   <div class="home">
     <HelloWorld msg="欢迎使用基因透镜生信分析网站"/>
   </div>
-  <div class="container">
-  </div>
+  
 </template>
 
 <script>

@@ -15,14 +15,6 @@
               </div>
             </div>
           </li>
-          <li>
-            <div class="dropdown-container" @mouseout="hide_childbar('genomics')" @mouseover="show_childbar('genomics')">
-              <p class="bartext">基因组分析</p>
-              <div v-show="flags.genomics" class="dropdown-content">
-                <router-link to="/chipseq" class="nav-link2">chipseq</router-link>
-              </div>
-            </div>
-          </li>
           <li class="nav-item">
             <div class="bartext">
               <router-link to="/about" class="nav-link1">关于我们</router-link>

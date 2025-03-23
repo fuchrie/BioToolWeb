@@ -8,12 +8,11 @@
       <router-link to="/user" class="nav-link">
         <img src="./../assets/1.png" alt="">
         文件上传与下载</router-link>
-      <router-link to="/user" class="nav-link">
-        <img src="./../assets/5.png" alt="">数据可视化</router-link>
+      <!-- <router-link to="/user" class="nav-link">
+        <img src="./../assets/5.png" alt="">数据可视化</router-link> -->
       <router-link to="/chipseq" class="nav-link">
         <img src="./../assets/6.png" alt="">表观组Chiq-Seq分析</router-link>
-      <router-link to="/genomics" class="nav-link">
-        <img src="./../assets/2.png" alt="">基因组分析</router-link>
+  
     </div>
 </template>
 

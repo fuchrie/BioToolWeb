@@ -1,30 +1,44 @@
 <template>
     <div class="directory-tree">
     <el-tree
+      ref="tree"
       :data="treeData"
       :props="defaultProps"
       :load="loadNode"
       lazy
       node-key="path"
+      show-checkbox
+      @check-change="handleCheckChange"
       @node-click="handleNodeClick"
+      
     >
       <template #default="{ node, data }">
         <span>
           <i :class="data.type === 'directory' ? 'el-icon-folder' : 'el-icon-document'"></i>
           {{ node.label }}
         </span>
+        <el-pagination
+          v-if="data.type === 'directory' && data.total > 10"
+          small
+          layout="prev, pager, next"
+          :total="data.total"
+          :page-size="10"
+          :current-page="data.page"
+          @current-change="(newPage) => handlePageChange(node, newPage)"
+        />
       </template>
     </el-tree>
   </div>
 </template>
 <script>
-import { ElMessage } from 'element-plus';
 import { onMounted, ref } from 'vue';
 import axios from '@/utils/axios';
 export default{
     name:'filecheck',
-    setup(){
+    emits: ['selected-files'],
+    setup(props, { emit }){
         const treeData =ref([]);
+        const tree = ref(null); // 定义 tree 引用
         const defaultProps = ref({
             label: 'name', // 使用 name 字段作为节点标签
             isLeaf: (data) => data.type === 'file', // 文件是叶子节点
@@ -65,11 +79,23 @@ export default{
         const handleNodeClick = (data) => {
             console.log('Clicked node:', data);
         };
+        const handleCheckChange = () => {
+          if (tree.value) {
+            const selectedNodes = tree.value.getCheckedNodes(); // 通过 tree.value 访问方法
+            const selectedFiles = selectedNodes
+              .filter((node) => node.type === 'file')
+              .map((node) => node.name);
+            emit('selected-files', selectedFiles); // 将选中的文件名传递给父组件
+            
+          }
+        };
         return{
             treeData,
             defaultProps,
             loadNode,
             handleNodeClick,
+            handleCheckChange,
+            tree,
         }
     }
 }

@@ -8,7 +8,7 @@
       <!-- 第一列：上传文件 -->
       <div class="column">
         <h3>选择分析文件</h3>
-        <upload/>
+        <upload @selected-files="handleSelectedFiles" />
       </div>
       <!-- 第二列：可选软件 -->
       <div class="column">
@@ -23,7 +23,7 @@
           <template #item="{ element }">
             <div class="module-card">
               <div class="module-header">
-                <span>{{ element.name }}</span>
+                <span>{{ element.step }}</span>
               </div>
               <div class="module-description">{{ element.description }}</div>
             </div>
@@ -45,7 +45,7 @@
           <template #item="{ element }">
             <div class="module-card">
               <div class="module-header">
-                <span>{{ element.name }}</span>
+                <span>{{ element.step }}</span>
               </div>
               <div class="module-description">{{ element.description }}</div>
 
@@ -103,7 +103,39 @@
                       :id="`${element.id}-${param.name}`"
                       @change="handleFileUpload($event, param)"
                     />
-                    
+                    <!-- 样本-对照选择 -->
+                    <div v-if="element.step === 'macs2'" class="sample-control-selection">
+                      <h3>选择样本和对照</h3>
+                      <div>
+                        <label for="sample">样本文件：</label>
+                        <select id="sample" v-model="selectedSample">
+                          <option value="">请选择样本文件</option>
+                          <option v-for="file in files" :key="file" :value="file">
+                            {{ file }}
+                          </option>
+                        </select>
+                      </div>
+                      <div>
+                        <label for="control">对照文件：</label>
+                        <select id="control" v-model="selectedControl">
+                          <option value="">请选择对照文件</option>
+                          <option v-for="file in files" :key="file" :value="file">
+                            {{ file }}
+                          </option>
+                        </select>
+                      </div>
+                      <button @click="addSampleControlPair">选择另一组对照关系</button>
+                    </div>
+
+                    <!-- 已选择的样本-对照关系 -->
+                    <div v-if="element.step === 'macs2'" class="selected-pairs">
+                      <h3>已选择的样本-对照关系</h3>
+                      <ul>
+                        <li v-for="(pair, index) in param.value" :key="index">
+                          样本：{{ pair.sample }}，对照：{{ pair.control }}
+                        </li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
                 <button @click="toggleParams(element)">
@@ -128,6 +160,7 @@ import bar from '@/components/Tool_Navigation.vue';
 import draggable from "vuedraggable";
 import { ref } from "vue";
 import upload from '@/components/FileCheck.vue';
+
 export default {
   name: 'apparent',
   components:{
@@ -141,21 +174,17 @@ export default {
       
       {
         id: 1,
-        name: "FastQC",
+        step: "FastQC",
         description: "用于高通量测序数据的质量评估。",
         hasParams: false,//是否需要用户指定参数
         isRequired: false,//是否是流程必须
       },
-    ]);
-
-    // 已选择软件列表
-    const selectedModules = ref([
       {
         id: 1,
-        name: "fastq-dump",
+        step: "fastq-dump",
         description: "将下载的sra数据转化为fastq格式",
         hasParams: true,
-        isRequired: true,
+        isRequired: false,
         showParams: false,
         parameters:[
         { name: "singleORpaired", label: "测序数据", type: "select", value: "", options: [
@@ -164,16 +193,21 @@ export default {
           ],
         },]
       },
+    ]);
+
+    // 已选择软件列表
+    const selectedModules = ref([
+      
       {
         id:2,
-        name:"Fastp",
+        step:"Fastp",
         description:"处理原始的高通量测序数据",
         hasParams: false,
         isRequired: true,
       },
       {
         id: 3,
-        name: "Bowtie2",
+        step: "Bowtie2",
         description: "用于将测序数据比对到参考基因组。",
         hasParams: true,
         isRequired: true,
@@ -188,28 +222,24 @@ export default {
       },
       {
         id: 4,
-        name: "markdup",
+        step: "markdup",
         description: "用于去除PCR重复。",
         hasParams: false,
         isRequired: true,
       },
       {
         id: 5,
-        name: "bamCoverage",
+        step: "bamCoverage",
         description: "Bam格式转bigwig格式",
-        hasParams: true,
+        hasParams: false,
         isRequired: true,
-        showParams: false,
-        parameters: [
-          { name: "binSize", label: "bin的大小", type: "number", value: "", placeholder: "bin的大小" },
-          { name: "normalizeUsing", label: "指定归一化方法，例：RPKM、RPM、BED", type: "text", value: "", placeholder: "指定归一化方法，例：RPKM、RPM、BED" },
-        ],
+
       },
       {
         id: 6,
-        name: "macs2",
+        step: "macs2",
         description: "peak calling",
-        hasParams: false,
+        hasParams: true,
         isRequired: true,
         showParams: false,
         parameters: [
@@ -223,24 +253,60 @@ export default {
         ],
       },
     ]);
-    const handleFilesUploaded = (files) => {
-      const fileOptions = files.map((file) => ({
-        value: file.name,
-        label: file.name,
-      }));
+    // 文件列表
+    const files = ref([]);
 
-      // 更新 macs2 模块的 parameters
-      const macs2Module = selectedModules.value.find(
-        (module) => module.name === "macs2"
-      );
+    // 当前选择的样本和对照
+    const selectedSample = ref("");
+    const selectedControl = ref("");
+
+    // 处理文件上传
+    const handleSelectedFiles = (gotfiles) => {
+      files.value = gotfiles;
+      // 找到 macs2 模块
+      const macs2Module = selectedModules.value.find(module => module.step === 'macs2');
       if (macs2Module) {
-        const fileAssignments = files.map((file) => ({
-          fileName: file.name,
-          role: "", // 样本或对照
-          controlFile: "", // 对应的对照文件
-        }));
-        macs2Module.parameters[0].value = fileAssignments;
-        macs2Module.parameters[0].options = fileOptions;
+        // 找到 fileAssignments 参数
+        const fileAssignments = macs2Module.parameters.find(
+          param => param.name === 'fileAssignments'
+        );
+        if (fileAssignments) {
+          // 更新 options，填充上传的文件名
+          fileAssignments.options = gotfiles.map(file => ({
+            value: file,
+            label: file,
+          }));
+          console.log(fileAssignments.options)
+          console.log(gotfiles)
+        }
+      }
+    };
+
+    // 添加样本-对照关系
+    const addSampleControlPair = () => {
+      if (selectedSample.value && selectedControl.value) {
+        // 找到 macs2 模块
+        const macs2Module = selectedModules.value.find(module => module.step === 'macs2');
+        if (macs2Module) {
+          // 找到 fileAssignments 参数
+          const fileAssignments = macs2Module.parameters.find(
+            param => param.name === 'fileAssignments'
+          );
+          if (fileAssignments) {
+            
+            // 添加样本-对照关系
+            fileAssignments.value.push({
+              sample: selectedSample.value,
+              control: selectedControl.value,
+            });
+            // 清空选择框
+            selectedSample.value = "";
+            selectedControl.value = "";
+            console.log(fileAssignments)
+          }
+        }
+      } else {
+        alert("请选择样本文件和对照文件！");
       }
     };
     // 切换参数显示
@@ -250,15 +316,62 @@ export default {
 
     // 提交 pipeline
     const submitPipeline = () => {
-      const pipeline = selectedModules.value.map((module) => ({
-        moduleName: module.name,
-        parameters: module.parameters.reduce((acc, param) => {
-          acc[param.name] = param.value;
-          return acc;
-        }, {}),
-      }));
-      console.log("提交的 pipeline:", pipeline);
-      // 这里可以调用 API 将 pipeline 发送到后端
+      // 定义映射关系
+      const stepMapping = {
+        "fastq-dump": "sra_to_fastq",
+        "FastQC":"quality",
+        "Fastp": "trimming",
+        "Bowtie2": "alignment",
+        "markdup": "markdup",
+        "bamCoverage": "bamCoverage",
+        "macs2": "peak",
+      };
+      // 提取步骤名称
+      const steps = selectedModules.value
+        .map((module) => stepMapping[module.step] || module.step) // 如果找不到映射，则使用原名称
+        .join(",");
+
+      // 提取参数
+      const parameters = selectedModules.value.reduce((acc, module) => {
+        if (module.parameters) {
+          acc[module.step] = module.parameters.reduce((paramAcc, param) => {
+            paramAcc[param.name] = param.value;
+            return paramAcc;
+          }, {});
+        }
+        return acc;
+      }, {});
+
+      // 构造请求参数
+      const payload = {
+        module: "epi", // 这里假设模块名是 "dna"，可以根据实际情况动态设置
+        step: steps,
+        parameters, // 传递参数
+      };
+      const token = localStorage.getItem('token');
+      // 调用后端 API
+      fetch("http://202.195.187.9:8000/api/pipeline/run/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}` // 将令牌添加到请求头中
+        },
+        body: JSON.stringify(payload),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("后端响应:", data);
+          if (data.success) {
+            alert("流水线任务提交成功！");
+          } else {
+            alert(`提交失败：${data.message}`);
+          }
+        })
+        .catch((error) => {
+          console.error("请求失败:", error);
+          alert("请求失败，请检查网络连接或后端服务状态。");
+        });
+        console.log(payload)
     };
 
     // 监听拖动事件
@@ -279,13 +392,17 @@ export default {
     };
 
     return {
+      files,
       availableModules,
       selectedModules,
       toggleParams,
       submitPipeline,
       logChange,
       checkMove,
-      handleFilesUploaded,
+      handleSelectedFiles,
+      addSampleControlPair,
+      selectedSample,
+      selectedControl
     };
   },
 };
