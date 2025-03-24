@@ -1,33 +1,34 @@
 <template>
-    <div class="directory-tree">
-    <el-tree
-      ref="tree"
-      :data="treeData"
-      :props="defaultProps"
-      :load="loadNode"
-      lazy
-      node-key="path"
-      show-checkbox
-      @check-change="handleCheckChange"
-      @node-click="handleNodeClick"
-      
-    >
-      <template #default="{ node, data }">
-        <span>
-          <i :class="data.type === 'directory' ? 'el-icon-folder' : 'el-icon-document'"></i>
-          {{ node.label }}
-        </span>
-        <el-pagination
-          v-if="data.type === 'directory' && data.total > 10"
-          small
-          layout="prev, pager, next"
-          :total="data.total"
-          :page-size="10"
-          :current-page="data.page"
-          @current-change="(newPage) => handlePageChange(node, newPage)"
-        />
-      </template>
-    </el-tree>
+  <div class="directory-tree">
+      <el-scrollbar>
+      <el-tree
+        ref="tree"
+        :data="treeData"
+        :props="defaultProps"
+        :load="loadNode"
+        lazy
+        node-key="path"
+        show-checkbox
+        @check-change="handleCheckChange"
+        @node-click="handleNodeClick"
+      >
+        <template #default="{ node, data }">
+          <span>
+            <i :class="data.type === 'directory' ? 'el-icon-folder' : 'el-icon-document'"></i>
+            {{ node.label }}
+          </span>
+          <el-pagination
+            v-if="data.type === 'directory' && data.total > 10"
+            small
+            layout="prev, pager, next"
+            :total="data.total"
+            :page-size="10"
+            :current-page="data.page"
+            @current-change="(newPage) => handlePageChange(node, newPage)"
+          />
+        </template>
+      </el-tree>
+    </el-scrollbar>
   </div>
 </template>
 <script>
@@ -35,7 +36,7 @@ import { onMounted, ref } from 'vue';
 import axios from '@/utils/axios';
 export default{
     name:'filecheck',
-    emits: ['selected-files'],
+    emits: ['selected-files', 'selected-paths'],
     setup(props, { emit }){
         const treeData =ref([]);
         const tree = ref(null); // 定义 tree 引用
@@ -85,6 +86,11 @@ export default{
             const selectedFiles = selectedNodes
               .filter((node) => node.type === 'file')
               .map((node) => node.name);
+            const selectedPaths = selectedNodes
+              .filter((node) => node.type === 'file')
+              .map((node) => node.path); // 获取文件路径
+
+            emit('selected-paths', selectedPaths); // 传递文件路径
             emit('selected-files', selectedFiles); // 将选中的文件名传递给父组件
             
           }
@@ -102,6 +108,7 @@ export default{
 </script>
 <style scoped>
 .directory-tree {
+  overflow-y: auto;
   background: #f8f9fa;
   border-radius: 8px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
